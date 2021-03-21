@@ -7,6 +7,7 @@ package services;
 
 import dataaccess.UserDB;
 import java.util.List;
+import models.Role;
 import models.User;
 
 /**
@@ -21,33 +22,33 @@ public class UserService {
         return user;
     }
     
-    public List<User> getAll(User user) throws Exception {
+    public List<User> getAll() throws Exception {
         UserDB userDB = new UserDB();
-        List<User> users = userDB.getAll(user);
+        List<User> users = userDB.getAll();
         return users;
     }
     
-    public void insert(String email, String firstName, String lastName, String password, boolean active, int roleID) throws Exception {
-        User user = new User(email, active, firstName, lastName, password, roleID);
+    public void insert(String email, boolean active, String firstName, String lastName, String password, int roleID) throws Exception {
+        User user = new User(email, active, firstName, lastName, password);
         UserDB userDB = new UserDB();
         userDB.insert(user);
     }
     
-    public void update(String email, String firstName, String lastName, String password, boolean active, int roleID) throws Exception {
-        User user = new User(email, active, firstName, lastName, password, roleID);
+    public void update(String email, boolean active, String firstName, String lastName, String password) throws Exception {
         UserDB userDB = new UserDB();
+        User user = userDB.get(email);
+        user.setActive(active);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPassword(password);
+        
         userDB.update(user); 
     }
     
     public void delete(String email) throws Exception {
-        User user = new User();
-        user.setEmail(email);
-        UserDB userDB = new UserDB();        
+        UserDB userDB = new UserDB();   
+        User user = userDB.get(email);
         userDB.delete(user);
     }
     
-    public boolean insert(String email, String firstName, String lastName, String password, boolean active, String role) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

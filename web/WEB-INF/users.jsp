@@ -17,17 +17,17 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
-        <div class="container">
+        <div>
            
-            <div class="addForm">
+            <div>
                 <c:if test="${activeUser == null}">
-                <h1 class="addUser">Add User</h1>
+                <h1>Add User</h1>
                     <form action="users" method="post">
-                        <input class="userInfo" type="email" placeholder="Email" name="email" required>
-                        <input class="userInfo" type="text" placeholder="First Name" name="firstname" required> 
-                        <input class="userInfo" type="text" placeholder="Last Name" name="lastname" required>         
-                        <input class="userInfo" type="password" placeholder="Password" name="password" required>
-                        <select class="userInfo" name="role">
+                        <input type="email" placeholder="Email" name="email" required>
+                        <input type="text" placeholder="First Name" name="firstname" required> 
+                        <input type="text" placeholder="Last Name" name="lastname" required>         
+                        <input type="password" placeholder="Password" name="password" required>
+                        <select name="role">
                             <option value=1>System Admin</option>
                             <option value=2>Regular User</option>
                             <option value=3>Company Admin</option>
@@ -39,8 +39,8 @@
                 </c:if>
             </div>
             
-            <div class="manageForm">
-                <h1 class="manageUser">Manage Users</h1>
+            <div>
+                <h1>Manage Users</h1>
                 <table>
                     <tr>
                         <th>Email</th>
@@ -56,25 +56,25 @@
                         <tr>    
                             <td>${user.email}</td>
                             <td>
-                                <input class="userInfo chActive" type="checkbox" name="isActive" checked>                          
+                                <input type="checkbox" name="isActive" checked>                          
                             </td>
                             <td>${user.firstName}</td>
                             <td>${user.lastName}</td>
-                            <td>${user.roleID}</td>
+                            <td>${user.role.roleName}</td>
                          
                             
                             <td>
                                 <form action="users" method="post" >
                                     <input type="submit" name="edit" value="Edit">
                                     <input type="hidden" name="action" value="edit">
-                                   
+                                    <input type="hidden" name="editEmail" value="${user.email}">
                                 </form>
                             </td>
                             <td>
                                 <form action="users" method="post" >
                                     <input type="submit" name="delete" value="Delete">
                                     <input type="hidden" name="action" value="delete">
-                                    
+                                    <input type="hidden" name="email" value="${user.email}">
                                 </form>
                             </td>
                         </tr>    
@@ -83,36 +83,36 @@
                 </table>
             </div>
                            
-            <div class="editForm">
+            <div>
                 
-                <h1 class="editUser">Edit User</h1>
+                <h1>Edit User</h1>
                     <form action="users" method="post">
-                        <input class="userInfo" type="email" placeholder="Edit Email" name="email" value="${user.email}" readonly>
-                        <input class="userInfo" type="text" placeholder="Edit First Name" name="firstname" value="${user.firstname}"> 
-                        <input class="userInfo" type="text" placeholder="Edit Last Name" name="lastname" value="${user.lastname}">     
-                        <input class="userInfo" type="password" placeholder="Password" name="password" value="${user.password}">
-                        <select class="userInfo" name="role" value="${editRole}">
+                        <input type="email" placeholder="Edit Email" name="email" value="${editEmail}" readonly>
+                        <input type="text" placeholder="Edit First Name" name="firstname" value="${editFirstname}"> 
+                        <input type="text" placeholder="Edit Last Name" name="lastname" value="${editLastname}">     
+                        <input type="password" placeholder="Password" name="password" value="${editPassword}">
+                        <select name="role" value="${editRole}">
                              <c:if test="${editRole eq 1}">
                                 <option value=1 selected>System Admin</option>
-                                 <option value=2 >Regular User</option>
-                                 <option value=3 >Company Admin</option>
+                                 <option value=2>Regular User</option>
+                                 <option value=3>Company Admin</option>
                             </c:if>
                             <c:if test="${editRole eq 2}">
-                                <option value=1 >System Admin</option>
+                                <option value=1>System Admin</option>
                                  <option value=2 selected>Regular User</option>
-                                 <option value=3 >Company Admin</option>
+                                 <option value=3>Company Admin</option>
                             </c:if>
                             <c:if test="${editRole eq 3}">               
-                                <option value=1 >System Admin</option>
-                                 <option value=2 >Regular User</option>
+                                <option value=1>System Admin</option>
+                                 <option value=2>Regular User</option>
                                  <option value=3 selected >Company Admin</option>
                             </c:if>
                         </select>
 
-                        <input type="hidden" name="action" value="edit">
-                        <input class="addInput" type="submit" value="Edit">
+                        <input type="hidden" name="action" value="save">
+                        <input type="submit" value="Save">
                         <input type="hidden" name="action" value="cancel">
-                        <input class="Cancel" type="submit" value="Cancel">
+                        <input type="submit" value="Cancel">
                     </form>  
             
             </div>

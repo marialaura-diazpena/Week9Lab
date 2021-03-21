@@ -29,25 +29,24 @@ public class UserServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         HttpSession session = request.getSession();
+        RoleService roleservice = new RoleService();
+        UserService userservice = new UserService();
         try {
-
-            User user = null;
-            Role role = null;
-            UserService userservice = new UserService();
-            List<User> users = userservice.getAll(user);
-            RoleService roleservice = new RoleService();
-            List<Role> roles = roleservice.getAll(role);
-
+            
+       
+            List<User> users = userservice.getAll();
+            
+            List<Role> roles = roleservice.getAll();
+            
             request.setAttribute("users", users);
             request.setAttribute("roles", roles);
-            getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
-
+          
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
 
     @Override
@@ -55,18 +54,17 @@ public class UserServlet extends HttpServlet {
             throws ServletException, IOException {
         UserService us = new UserService();
 
-        String editEmail = request.getParameter("editEmail");
-        String editFname = request.getParameter("editFirstname");
-        String editLname = request.getParameter("editLastname");
-        String editRole = request.getParameter("editRole");
-        String editPass = request.getParameter("editPassword");
-
         String email = request.getParameter("email");
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
-
+        
+        String editEmail = request.getParameter("editEmail");
+        String editFname = request.getParameter("editFirstname");
+        String editLname = request.getParameter("editLastname");
+        String editRole = request.getParameter("editRole");
+        String editPass = request.getParameter("editPassword");
 
         boolean active = true;
 
@@ -85,12 +83,16 @@ public class UserServlet extends HttpServlet {
 
             switch (action) {
                 case "edit":
-                    selectedUser = us.get(request.getParameter("editEmail"));
+                    
+                    
+                    selectedUser = us.get(editEmail);
+                    
                     editEmail = selectedUser.getEmail();
                     editFname = selectedUser.getFirstName();
                     editLname = selectedUser.getLastName();
-                    editRole = String.valueOf(selectedUser.getRoleID());
                     editPass = selectedUser.getPassword();
+                    editRole = selectedUser.getRole().getRoleId().toString();
+                    
 
                     request.setAttribute("editEmail", editEmail);
                     request.setAttribute("editFirstname", editFname);
@@ -100,11 +102,13 @@ public class UserServlet extends HttpServlet {
                     break;
 
                 case "add":
-                    us.insert(email, firstName, lastName, password, active, Integer.parseInt(role));
+                    User newUser = new User(email, active, firstName, lastName, password);
+                    us.insert(email, active, firstName, lastName, password, Integer.parseInt(role));
                     break;
 
                 case "save":
-                    us.update(editEmail, editFname, editLname, editPass, active, Integer.parseInt(editRole));
+                    
+                    us.update(email, active, firstName, lastName, password);
                     break;
                     
                 case "delete":
@@ -128,9 +132,9 @@ public class UserServlet extends HttpServlet {
             User user = null;
             Role roleAll = null;
             UserService userservice = new UserService();
-            List<User> users = userservice.getAll(user);
+            List<User> users = userservice.getAll();
             RoleService roleservice = new RoleService();
-            List<Role> roles = roleservice.getAll(roleAll);
+            List<Role> roles = roleservice.getAll();
 
             request.setAttribute("users", users);
             request.setAttribute("roles", roles);
@@ -142,7 +146,7 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("selectedUser", selectedUser);
 
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
-
+        return;
     }
 
 }
