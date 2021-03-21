@@ -28,8 +28,9 @@ public class UserService {
         return users;
     }
     
-    public void insert(String email, boolean active, String firstName, String lastName, String password, int roleID) throws Exception {
+    public void insert(String email, boolean active, String firstName, String lastName, String password, Role role) throws Exception {
         User user = new User(email, active, firstName, lastName, password);
+        user.setRole(role);
         UserDB userDB = new UserDB();
         userDB.insert(user);
     }

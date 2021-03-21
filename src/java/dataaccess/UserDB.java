@@ -56,8 +56,8 @@ public class UserDB {
             trans.begin();
             em.persist(user);
             trans.commit();
-        } catch (Exception ex) {
-            trans.rollback();
+//        } catch (Exception ex) {
+//            trans.rollback();
         } finally {
             em.close();
         }

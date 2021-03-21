@@ -103,11 +103,11 @@ public class UserServlet extends HttpServlet {
 
                 case "add":
                     User newUser = new User(email, active, firstName, lastName, password);
-                    us.insert(email, active, firstName, lastName, password, Integer.parseInt(role));
+                    Role userRole = new Role(Integer.parseInt(role));
+                    us.insert(email, active, firstName, lastName, password, userRole);
                     break;
 
                 case "save":
-                    
                     us.update(email, active, firstName, lastName, password);
                     break;
                     
