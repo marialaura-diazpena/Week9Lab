@@ -30,11 +30,11 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession session = request.getSession();
+        
         RoleService roleservice = new RoleService();
         UserService userservice = new UserService();
-        try {
-            
+        try { 
+            HttpSession session = request.getSession();
        
             List<User> users = userservice.getAll();
             
